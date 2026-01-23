@@ -1,0 +1,6 @@
+github.com/flexits/vt-enable v1.0.1 h1:C3lEymmFwbf14jKprci1r4xTJA2V0TGQSTHiRI8G+Qo=
+github.com/flexits/vt-enable v1.0.1/go.mod h1:mPCK5zh4otUVnTZL/3xeuJ0PvaryBHn9XyXl1N2ipCg=
+github.com/goforj/godump v1.9.0 h1:Y/APfWKQKnJetXgVJxDqD7vEpTGSgAwbKJGmj0UAteI=
+github.com/goforj/godump v1.9.0/go.mod h1:/Vy+p50JtOkwsFN5dA1HQ7LS5gtPk3f61DaP4UR2o4s=
+golang.org/x/sys v0.40.0 h1:DBZZqJ2Rkml6QMQsZywtnjnnGvHza6BTfYFWY9kjEWQ=
+golang.org/x/sys v0.40.0/go.mod h1:OgkHotnGiDImocRcuBABYBEXf8A9a87e/uXjp9XT3ks=
