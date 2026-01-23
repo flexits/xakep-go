@@ -1,5 +1,7 @@
 # xakep-go
 
+_(пока в разработке, начинаем в феврале)_
+
 <img height="400" alt="gopher-student" src="https://github.com/user-attachments/assets/59acbf9f-fa4d-45bf-914d-3cc44bdd9831" />
 
 Здесь находятся примеры для серии статей в журнал Хакер.
