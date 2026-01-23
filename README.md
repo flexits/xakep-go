@@ -2,7 +2,7 @@
 
 <img height="400" alt="gopher-student" src="https://github.com/user-attachments/assets/59acbf9f-fa4d-45bf-914d-3cc44bdd9831" />
 
-Здесь находится примеры для серии статей в журнал Хакер.
+Здесь находятся примеры для серии статей в журнал Хакер.
 
 ## Attributions
 
