@@ -75,35 +75,40 @@ func run() (err error) {
 	// загружаем список портов из файла
 	ports, err := loadPortsList(prtFileName)
 	if err != nil {
-		return err
+		return fmt.Errorf("loading ports: %w", err)
 	}
 	if len(ports) == 0 {
-		e := fmt.Sprintf("error reading %s: empty file\n", prtFileName)
-		return errors.New(e)
+		return fmt.Errorf("reading %s: empty file", prtFileName)
 	}
 
-	// открываем список целевых хостов и создаём Scanner
+	// открываем список целевых хостов
 	srcFile, err := os.Open(srcFileName)
 	if err != nil {
-		return err
+		return fmt.Errorf("opening %s: %w", srcFileName, err)
 	}
 	defer srcFile.Close()
-	scanner := bufio.NewScanner(srcFile)
 
-	// создаём файл для записи результатов и Writer
+	// создаём файл для записи результатов
 	dstFile, err := os.Create(dstFileName)
 	if err != nil {
-		return err
+		return fmt.Errorf("creating %s: %w", dstFileName, err)
 	}
 	defer dstFile.Close()
+
+	// создаём Scanner и Writer для буферизованного чтения и записи
+	scanner := bufio.NewScanner(srcFile)
 	writer := bufio.NewWriter(dstFile)
+	// пишем первый символ (начало массива JSON)
+	_, err = writer.WriteString("[")
+	if err != nil {
+		return fmt.Errorf("writing to file: %w", err)
+	}
 	defer func() {
-		// запланируем сброс буфера и объединим ошибки
+		// запланируем сброс буфера
 		flushErr := writer.Flush()
+		// объединим ошибки, если есть
 		err = errors.Join(err, flushErr)
 	}()
-	writer.WriteString("[")
-	defer writer.WriteString("\n]")
 
 	buffer := make([]byte, 256)
 	timeout := 250 * time.Millisecond
@@ -127,11 +132,11 @@ func run() (err error) {
 			addr := net.JoinHostPort(target, port)
 			conn, err := net.DialTimeout("tcp", addr, timeout)
 			if err != nil {
+				// сервер:порт недоступен
 				continue
 			}
-			// пишем в консоль
-			s := fmt.Sprintf("%s is open\n", addr)
-			fmt.Print(s)
+			// сервер:порт доступен, сообщаем в консоль
+			fmt.Printf("%s is open\n", addr)
 			// соберём баннер
 			deadline := time.Now().Add(timeout)
 			conn.SetDeadline(deadline)
@@ -149,15 +154,21 @@ func run() (err error) {
 				continue
 			}
 			if isFirslElem {
-				writer.WriteByte(',')
 				isFirslElem = false
+			} else {
+				writer.WriteByte(',')
 			}
 			writer.WriteByte('\n')
 			writer.Write(jsonBytes)
 		}
 	}
+	// закрывающий символ массива JSON
+	writer.WriteString("\n]")
 	// проверим ошибку чтения файла с целями
-	return scanner.Err()
+	if err := scanner.Err(); err != nil {
+		return fmt.Errorf("reading source file: %w", err)
+	}
+	return nil
 }
 
 func main() {
