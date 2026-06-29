@@ -1,0 +1,10 @@
+.htaccess
+.config
+.git
+default.htm
+users.pwd
+CHANGELOG
+LICENSE
+INSTALL
+api-docs/v1/v1.json
+index.html
